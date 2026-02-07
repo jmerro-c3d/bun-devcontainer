@@ -1,12 +1,14 @@
-FROM buildpack-deps:bookworm-curl
+FROM buildpack-deps:trixie-curl
 
 RUN groupadd -g 1000 dev && \
     useradd -m -u 1000 -g dev -s /bin/zsh dev
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    openssh-client \
     unzip \
     zsh \
     git \
+    lazygit \
     ripgrep \
     fzf \
     bat \
