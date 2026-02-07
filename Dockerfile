@@ -1,4 +1,4 @@
-FROM buildpack-deps:trixie-curl
+FROM buildpack-deps:bookworm-curl
 
 RUN groupadd -g 1000 dev && \
     useradd -m -u 1000 -g dev -s /bin/zsh dev
@@ -8,7 +8,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     unzip \
     zsh \
     git \
-    lazygit \
     ripgrep \
     fzf \
     bat \
@@ -22,6 +21,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 ENV BUN_INSTALL="/usr/local"
 
 RUN curl -fsSL https://bun.sh/install | bash
+
+# Install lazygit (latest release)
+RUN LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": *"v\K[^"]*') && \
+    curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/download/v${LAZYGIT_VERSION}/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz" && \
+    tar xf lazygit.tar.gz lazygit && \
+    install -D lazygit /usr/local/bin/lazygit && \
+    rm lazygit.tar.gz lazygit
 
 USER dev
 
