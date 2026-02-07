@@ -18,9 +18,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/* \
     && echo "dev ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/dev
 
-ENV BUN_INSTALL="/usr/local"
 
-RUN curl -fsSL https://bun.sh/install | bash
 
 # Install lazygit (latest release)
 RUN LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": *"v\K[^"]*') && \
@@ -30,6 +28,10 @@ RUN LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygi
     rm lazygit.tar.gz lazygit
 
 USER dev
+
+RUN curl -fsSL https://bun.sh/install | bash
+
+RUN sudo ln -s /home/dev/.bun/bin/bun /usr/local/bin/bun
 
 RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended \
     && sed -i 's/plugins=(git)/plugins=(git fzf sudo extract zoxide docker bun)/' ~/.zshrc \
