@@ -32,6 +32,7 @@ USER dev
 RUN curl -fsSL https://bun.sh/install | bash
 
 RUN sudo ln -s /home/dev/.bun/bin/bun /usr/local/bin/bun
+RUN sudo ln -s /home/dev/.bun/bin/bunx /usr/local/bin/bunx
 
 RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended \
     && sed -i 's/plugins=(git)/plugins=(git fzf sudo extract zoxide docker bun)/' ~/.zshrc \
